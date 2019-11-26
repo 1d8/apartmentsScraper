@@ -1,3 +1,4 @@
+#NOTE: THIS VERSION USES A DICTIONARY TO PRINT THE VALUES, PROVIDING A CLEANER OUTPUT COMPARED TO EXTRA.PY WHICH USES A BASIC PRINT STATEMENT
 from bs4 import BeautifulSoup
 from requests import get
 headers = ({'User-Agent':
@@ -5,8 +6,10 @@ headers = ({'User-Agent':
 city = input('Enter City: ').lower()
 city = city.replace(' ', '-')
 state = input('Enter State Abbreviation: ').lower()
+print()
+d = {}
 
-for i in range(1,3):
+for i in range(1,5):
     i = str(i)
     url = "https://apartments.com/" + city + "-" + state + "/" + i
     response = get(url, headers=headers)
@@ -29,9 +32,18 @@ for i in range(1,3):
         aptprice = aptprice.text
         phone = phone.text
         phone = phone.replace('\n', '')
-        print("Name:", aptname, "\n", "Location:", addy, "\n", "Beds:", bedcount, "\n", "Price:", aptprice, "\n", "Phone Number:", phone, "\n")
-        name.pop(0)
-        location.pop(0)
-        beds.pop(0)
-        price.pop(0)
-        contact.pop(0)
+        aptname = aptname.replace('\r', '')
+        aptname = aptname.replace('\n', '')
+        d["Apartment Name:"] = aptname
+        d["Address:"] = addy
+        d["Beds:"] = bedcount
+        d["Apartment Price:"] = aptprice
+        d["Contact Number:"] = phone
+        for key, value in d.items():
+            print(key, value)
+            name.pop(0)
+            location.pop(0)
+            beds.pop(0)
+            price.pop(0)
+            contact.pop(0)
+        #print("Name:", aptname, "\n", "Location:", addy, "\n", "Beds:", bedcount, "\n", "Price:", aptprice, "\n", "Phone Number:", phone, "\n")
